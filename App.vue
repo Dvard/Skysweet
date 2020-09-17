@@ -1,0 +1,85 @@
+<template>
+	<div id="app" class="container-fluid">
+		<Navbar></Navbar>
+		<router-view/>
+	</div>
+</template>
+
+<style>
+:root {
+	--light-border: #eee;
+	--white: #fff;
+	--white-hover: #f9f9f9;
+	--black: #0D0C07;
+	--accent: #17BEBB;
+	--accent-y: #FFC914;
+	--accent-o: #E4572E;
+}
+
+@font-face {
+	font-family: 'Permanent Marker';
+	src: url("./assets/Permanent_Marker/PermanentMarker-Regular.ttf");
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	src: url("./assets/Montserrat/Montserrat-Regular.ttf");
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Permanent Marker', 'Montserrat', sans-serif;
+}
+
+p, a, li, .btn {
+	font-family: 'Montserrat', sans-serif;
+	color: var(--black);
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+.btn {
+	padding-left: 3vw;
+	padding-right: 3vw;
+	border: none;
+	width: fit-content;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+	border-radius: 5px;
+	color: var(--white);
+	outline: none;
+}
+
+.btn:hover {
+	cursor: pointer;
+	color: var(--light-border);
+}
+
+.btn-light {
+	background-color: var(--light-border);
+	border: 1px solid var(--white);
+	color: var(--black);
+	font-size: 2rem;
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+}
+
+.btn-light:hover {
+	color: var(--accent);
+}
+
+.btn-primary {
+	background-color: var(--accent);
+}
+
+.btn-info {
+	background-color: var(--accent-o);
+}
+</style>
+<script>
+import Navbar from "@/components/Navbar";
+export default {
+	components: {Navbar}
+}
+</script>
