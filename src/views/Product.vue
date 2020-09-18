@@ -1,7 +1,7 @@
 <template>
 	<div id="product">
 		<main>
-			<button class="btn btn-primary" @click="$router.push('/')">Back</button>
+			<button class="btn btn-primary" @click="$router.push('/#products')">Back</button>
 			<div class="row" id="inner">
 				<div class="col-md-6 col-sm-12">
 					<h1 v-text="product.title"></h1>
@@ -12,16 +12,16 @@
 					<h2 v-text="product.price + '€'"></h2>
 					<div class="row" id="buttons">
 						<div class="col-4">
-							<button class="btn btn-light">-</button>
+							<button class="btn btn-light" @click="(to_buy_qty > 1) ? to_buy_qty-- : to_buy_qty = 1">-</button>
 						</div>
 						<div class="col-4">
-							<div id="qty">0</div>
+							<div id="qty" v-text="to_buy_qty"></div>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-light">+</button>
+							<button class="btn btn-light" @click="to_buy_qty++">+</button>
 						</div>
 					</div>
-					<button class="btn btn-info">Add to cart</button>
+					<button class="btn btn-primary" @click="add_to_cart()">Add to cart</button>
 				</div>
 			</div>
 		</main>
@@ -34,6 +34,7 @@ export default {
 	data: function () {
 		return {
 			product: {},
+			to_buy_qty: 1,
 		};
 	},
 	methods: {
@@ -46,11 +47,38 @@ export default {
 			}
 		},
 		fetchProduct: function (id) {
-			return {id: id, title: 'Title', description: 'description', price: 2.5, short: 'green_tea'};
+			this.$axios
+					.get(this.$apiUrl + '/product/' + id, {})
+					.then((results) => {
+						this.product = results.data;
+					})
+					.catch((error) => {
+						console.log(error);
+						this.product = [];
+					})
+		},
+		addToCart: function () {
+			if (this.$user_token !== '') {
+				this.$axios
+					.post(this.$apiUrl + '/user/cart', {
+						product_id: this.product.id,
+						headers: {
+							'Content-Type': 'application/json',
+							'Token': this.$user_token,
+						}
+					})
+					.then((results) => {
+						return results
+					})
+					.catch((error) => {
+						console.log(error);
+						this.product = [];
+					})
+			}
 		},
 	},
 	mounted() {
-		this.product = this.fetchProduct(this.$props.id)
+		this.fetchProduct(this.$props.id)
 	},
 }
 </script>

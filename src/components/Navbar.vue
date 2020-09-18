@@ -14,7 +14,8 @@
 				<a href="#products" class="nav-item nav-link">Products</a>
 			</div>
 			<div class="col-2">
-				<a href="/cart" class="nav-item nav-link">Cart</a>
+				<button v-if="!isLoggedIn" class="nav-item nav-link btn btn-primary" @click="$router.push('/user')">Login/Signup</button>
+				<button v-else @click="$router.push('/user')" class="nav-item nav-link btn btn-info">Cart</button>
 			</div>
 		</div>
 	</nav>
@@ -23,6 +24,7 @@
 <script>
 export default {
 	name: 'Navbar',
+	props: ['isLoggedIn']
 }
 </script>
 

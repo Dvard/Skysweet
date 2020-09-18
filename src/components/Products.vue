@@ -9,11 +9,8 @@
 					<p v-text="product.description"></p>
 					<h3 v-text="product.price + '€'"></h3>
 					<div class="row buttons">
-						<div class="col-md-6 col-sm-12">
-							<button class="btn btn-primary" @click="$router.push('/product/' + product.id)">Read more</button>
-						</div>
-						<div class="col-md-6 col-sm-12">
-							<button class="btn btn-info">Add to cart</button>
+						<div class="col-sm-12">
+							<button class="btn btn-info" @click="$router.push('/product/' + product.id)">Read more</button>
 						</div>
 					</div>
 				</div>
@@ -27,7 +24,8 @@ export default {
 	name: 'Products',
 	data: function () {
 		return {
-			products: [
+			products: [],
+			backup_products: [
 				{
 					id: 1,
 					title: 'Sweet Iced Tea',
@@ -71,7 +69,21 @@ export default {
 			catch {
 				return '';
 			}
-		}
+		},
+		fetchProducts() {
+			this.$axios
+					.get(this.$apiUrl + '/products', {})
+					.then((results) => {
+						this.products = results.data;
+					})
+					.catch((error) => {
+						console.log(error);
+						this.products = [];
+					})
+		},
+	},
+	mounted: function () {
+		this.fetchProducts()
 	},
 }
 </script>

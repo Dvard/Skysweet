@@ -1,9 +1,22 @@
 <template>
 	<div id="app" class="container-fluid">
-		<Navbar></Navbar>
+		<Navbar isLoggedIn-in="isLoggedIn"></Navbar>
 		<router-view/>
 	</div>
 </template>
+
+<script>
+import Navbar from "@/components/Navbar";
+
+export default {
+	components: {Navbar},
+	data: function () {
+		return {
+			isLoggedIn: false,
+		};
+	},
+}
+</script>
 
 <style>
 :root {
@@ -18,12 +31,12 @@
 
 @font-face {
 	font-family: 'Permanent Marker';
-	src: url("./assets/Permanent_Marker/PermanentMarker-Regular.ttf");
+	src: url("assets/Permanent_Marker/PermanentMarker-Regular.ttf");
 }
 
 @font-face {
 	font-family: 'Montserrat';
-	src: url("./assets/Montserrat/Montserrat-Regular.ttf");
+	src: url("assets/Montserrat/Montserrat-Regular.ttf");
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -49,11 +62,16 @@ html {
 	border-radius: 5px;
 	color: var(--white);
 	outline: none;
+	font-size: 1.3rem;
 }
 
 .btn:hover {
 	cursor: pointer;
 	color: var(--light-border);
+}
+
+.btn-primary:hover {
+	color: var(--light-border) !important;
 }
 
 .btn-light {
@@ -77,9 +95,3 @@ html {
 	background-color: var(--accent-o);
 }
 </style>
-<script>
-import Navbar from "@/components/Navbar";
-export default {
-	components: {Navbar}
-}
-</script>

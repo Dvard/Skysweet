@@ -19,8 +19,8 @@ const routes = [
 		props: true,
 	},
 	{
-		path: '/cart',
-		name: 'Cart',
+		path: '/user',
+		name: 'UserAndCart',
 		component: Cart,
 	},
 ]
