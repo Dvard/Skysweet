@@ -21,7 +21,7 @@
 							<button class="btn btn-light" @click="to_buy_qty++">+</button>
 						</div>
 					</div>
-					<button class="btn btn-primary" @click="add_to_cart()">Add to cart</button>
+					<button class="btn btn-primary" @click="addToCart()">Add to cart</button>
 				</div>
 			</div>
 		</main>
@@ -48,25 +48,26 @@ export default {
 		},
 		fetchProduct: function (id) {
 			this.$axios
-					.get(this.$apiUrl + '/product/' + id, {})
+					.get(this.$store.state.apiUrl + '/product/' + id, {})
 					.then((results) => {
 						this.product = results.data;
 					})
 					.catch((error) => {
 						console.log(error);
-						this.product = [];
+						this.product = {};
 					})
 		},
 		addToCart: function () {
-			if (this.$user_token !== '') {
+			if (this.$store.state.isLoggedIn) {
 				this.$axios
-					.post(this.$apiUrl + '/user/cart', {
+					.post(this.$store.state.apiUrl+ '/user/cart', {
 						product_id: this.product.id,
-						headers: {
-							'Content-Type': 'application/json',
-							'Token': this.$user_token,
-						}
-					})
+						qty: this.to_buy_qty,
+					}, {
+						params: {
+							token: this.$store.state.authToken,
+						},
+					},)
 					.then((results) => {
 						return results
 					})

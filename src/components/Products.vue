@@ -72,7 +72,7 @@ export default {
 		},
 		fetchProducts() {
 			this.$axios
-					.get(this.$apiUrl + '/products', {})
+					.get(this.$store.state.apiUrl + '/products', {})
 					.then((results) => {
 						this.products = results.data;
 					})

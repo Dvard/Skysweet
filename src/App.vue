@@ -1,6 +1,6 @@
 <template>
 	<div id="app" class="container-fluid">
-		<Navbar isLoggedIn-in="isLoggedIn"></Navbar>
+		<Navbar></Navbar>
 		<router-view/>
 	</div>
 </template>
@@ -10,11 +10,6 @@ import Navbar from "@/components/Navbar";
 
 export default {
 	components: {Navbar},
-	data: function () {
-		return {
-			isLoggedIn: false,
-		};
-	},
 }
 </script>
 
