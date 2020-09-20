@@ -24,10 +24,10 @@
 					<p v-text="product.price">Price</p>
 				</div>
 				<div class="col-xs-2">
-					<p v-text="cartQtys[index]"></p>
+					<p v-text="product.qty"></p>
 				</div>
 				<div class="col-xs-2">
-					<p class="bold" v-text="cartQtys[index] * product.price"></p>
+					<p class="bold" v-text="product.qty * product.price"></p>
 				</div>
 			</div>
 			<div id="subtotal-area">
@@ -45,73 +45,69 @@ export default {
 	name: 'Cart',
 	data: function () {
 		return {
-			userData: {},
-			userCartRaw: '',
 			cartData: [],
-			cartQtys: [],
 		};
 	},
+	computed: {
+		subtotal() {
+			return 0;
+		},
+	},
 	methods: {
-		fetchUserData() {
-			if (this.$store.state.isLoggedIn) {
-				this.$axios
-					.get(this.$store.state.apiUrl + '/user', {
+		getCartItemIds(cartStr) {
+			const ids = cartStr.split(',');
+			ids.pop()
+
+			return ids;
+		},
+		fetchProductById(product_id) {
+			return this.$axios.get(this.$store.state.apiUrl + '/product/' + product_id, {})
+		},
+		fetchCartItemById(cart_item_id) {
+			return this.$axios
+					.get(this.$store.state.apiUrl + '/cart_item/' + cart_item_id, {
 						params: {
 							token: this.$store.state.authToken
 						}
 					})
-					.then((results) => {
-						this.userData = results.data;
-						this.parseCartData(this.userData)
-					})
-					.catch((error) => {
-						console.log(error);
-						this.userData = {};
-					})
-			}
 		},
-		getProduct(id) {
-			this.$axios
-					.get(this.$store.state.apiUrl + '/product/' + id, {})
-					.then((results) => {
-						this.cartData.push(results.data)
-					})
-					.catch((error) => {
-						console.log(error);
-						this.cartData.push({})
-					})
-		},
-		parseCartData(cartStr) {
-			if (cartStr) {
-				const product_ids = cartStr.cart.split(',');
-				this.cartQtys = cartStr.cart_qtys.split(',');
+		parseCartItemIds(cart_item_ids) {
+			let cart_items = [];
 
-				for (let i = 0; i < product_ids.length; i++) {
-					const id = product_ids[i]
-					if (id !== '') {
-						this.getProduct(id)
-					}
+			cart_item_ids.forEach(cart_item_id => {
+				this.fetchCartItemById(cart_item_id).then(cart_item_results => {
+
+					this.fetchProductById(cart_item_results.data.product).then(product_results => {
+
+						cart_items.push({
+							title: product_results.data.title,
+							price: product_results.data.price,
+							qty: cart_item_results.data.qty,
+						})
+					});
+				});
+			})
+
+			return cart_items;
+		},
+		fetchCartItems() {
+			return this.$axios.get(this.$store.state.apiUrl + '/user', {
+				params: {
+					token: this.$store.state.authToken
 				}
-			}
+			})
 		},
 	},
-	mounted: async function() {
-		this.fetchUserData();
-		this.parseCartData();
-	},
-	computed: {
-		subtotal() {
-			let subtotal = 0;
-
-			for (let i = 0; i < this.cartData.length; i++) {
-				const tmpProduct = this.cartData[i];
-
-				subtotal += tmpProduct.price * this.cartQtys[i];
+	mounted() {
+		this.fetchCartItems().then((results) => {
+			const cart_item_ids = this.getCartItemIds(results.data.cart);
+			if (cart_item_ids) {
+				this.cartData = this.parseCartItemIds(cart_item_ids);
 			}
 
-			return subtotal
-		},
-	},
+			return [];
+		})
+	}
 }
 </script>
 
