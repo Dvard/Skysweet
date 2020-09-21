@@ -50,64 +50,72 @@ export default {
 	},
 	computed: {
 		subtotal() {
-			return 0;
+			let subtotal = 0;
+
+			this.cartData.forEach(cartItem => {
+				subtotal += cartItem.price * cartItem.qty;
+			})
+
+			return subtotal;
 		},
 	},
 	methods: {
 		getCartItemIds(cartStr) {
 			const ids = cartStr.split(',');
-			ids.pop()
+			ids.pop();
 
 			return ids;
 		},
-		fetchProductById(product_id) {
-			return this.$axios.get(this.$store.state.apiUrl + '/product/' + product_id, {})
+		fetchProductById(productId) {
+			return this.$axios.get(this.$store.state.apiUrl + '/product/' + productId, {});
 		},
-		fetchCartItemById(cart_item_id) {
+		fetchCartItemById(cartItemId) {
 			return this.$axios
-					.get(this.$store.state.apiUrl + '/cart_item/' + cart_item_id, {
+					.get(this.$store.state.apiUrl + '/cart_item/' + cartItemId, {
 						params: {
 							token: this.$store.state.authToken
 						}
-					})
+					});
 		},
-		parseCartItemIds(cart_item_ids) {
-			let cart_items = [];
+		parseCartItemIds(cartItemIds) {
+			let cartItems = [];
 
-			cart_item_ids.forEach(cart_item_id => {
-				this.fetchCartItemById(cart_item_id).then(cart_item_results => {
+			cartItemIds.forEach(cartItemId => {
+				this.fetchCartItemById(cartItemId).then(cartItemResults => {
 
-					this.fetchProductById(cart_item_results.data.product).then(product_results => {
+					this.fetchProductById(cartItemResults.data.product).then(productResults => {
 
-						cart_items.push({
-							title: product_results.data.title,
-							price: product_results.data.price,
-							qty: cart_item_results.data.qty,
-						})
+						cartItems.push({
+							title: productResults.data.title,
+							price: productResults.data.price,
+							qty: cartItemResults.data.qty,
+						});
 					});
 				});
-			})
+			});
 
-			return cart_items;
+			return cartItems;
 		},
 		fetchCartItems() {
 			return this.$axios.get(this.$store.state.apiUrl + '/user', {
 				params: {
 					token: this.$store.state.authToken
 				}
-			})
+			});
 		},
 	},
 	mounted() {
-		this.fetchCartItems().then((results) => {
-			const cart_item_ids = this.getCartItemIds(results.data.cart);
-			if (cart_item_ids) {
-				this.cartData = this.parseCartItemIds(cart_item_ids);
-			}
+		if (this.$store.state.isLoggedIn) {
+			this.fetchCartItems().then((results) => {
+				const cartItemIds = this.getCartItemIds(results.data.cart);
+				if (cartItemIds) {
+					this.cartData = this.parseCartItemIds(cartItemIds);
+				}
 
-			return [];
-		})
-	}
+				return [];
+			});
+		}
+	},
 }
 </script>
 
