@@ -1,4 +1,4 @@
-# skysweet
+# Skysweet
 
 ## Project setup
 ```
