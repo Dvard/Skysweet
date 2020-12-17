@@ -7,10 +7,7 @@
 				<p><mark>Blueberry</mark>!</p>
 				<div class="row">
 					<div class="col-md-6 col-sm-12">
-						<button class="btn btn-primary">Read more</button>
-					</div>
-					<div class="col-md-6 col-sm-12">
-						<button class="btn btn-info">Add to cart</button>
+						<button class="btn btn-primary" @click="$router.push('/product/5')">Read more</button>
 					</div>
 				</div>
 			</div>

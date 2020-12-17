@@ -10,6 +10,23 @@ import Navbar from "@/components/Navbar";
 
 export default {
 	components: {Navbar},
+	mounted() {
+		const authToken = localStorage.getItem('authToken')
+		console.log(authToken)
+
+		if (authToken) {
+			this.$axios.get(this.$store.state.apiUrl + '/test', {
+				params: {
+					token: authToken
+				}
+			// eslint-disable-next-line no-unused-vars
+			}).then(_ => {
+				this.$store.commit('setToLoggedIn', authToken)
+			}).catch(err => {
+				console.log(err)
+			});
+		}
+	}
 }
 </script>
 
@@ -19,6 +36,7 @@ export default {
 	--white: #fff;
 	--white-hover: #f9f9f9;
 	--black: #0D0C07;
+	--dark: #777;
 	--accent: #17BEBB;
 	--accent-y: #FFC914;
 	--accent-o: #E4572E;
@@ -72,7 +90,7 @@ html {
 .btn-light {
 	background-color: var(--light-border);
 	border: 1px solid var(--white);
-	color: var(--black);
+	color: var(--dark);
 	font-size: 2rem;
 	padding-left: 14px !important;
 	padding-right: 14px !important;

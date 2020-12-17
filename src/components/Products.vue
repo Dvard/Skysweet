@@ -6,9 +6,10 @@
 				<div class="product-inner">
 					<img :src="getImgUrl(product.short)" alt="Iced Tea">
 					<h2 v-text="product.title"></h2>
+					<h3 class="sold-out" v-if="product.qty < 1">Sold Out!</h3>
 					<p v-text="product.description"></p>
 					<h3 v-text="product.price + '€'"></h3>
-					<div class="row buttons">
+					<div class="row buttons" v-if="product.qty > 0">
 						<div class="col-sm-12">
 							<button class="btn btn-info" @click="$router.push('/product/' + product.id)">Read more</button>
 						</div>
@@ -74,7 +75,7 @@ export default {
 			this.$axios
 					.get(this.$store.state.apiUrl + '/products', {})
 					.then((results) => {
-						this.products = results.data;
+						this.products = results.data.products;
 					})
 					.catch((error) => {
 						console.log(error);
@@ -134,5 +135,9 @@ h1 {
 	margin-left: auto;
 	margin-right: auto;
 	width: fit-content;
+}
+
+.sold-out {
+	color: darkred;
 }
 </style>

@@ -22,6 +22,7 @@
 <script>
 export default {
 	name: 'User',
+	props: ['product_id'],
 	data: function () {
 		return {
 			formData: {
@@ -34,11 +35,8 @@ export default {
 	methods: {
 		login() {
 			if (this.formData.email && this.formData.password) {
-				this.$store.commit('login', {email: this.formData.email, password: this.formData.password});
-			}
-
-			if (this.$store.state.isLoggedIn) {
-				this.$router.push('/');
+				const payload = {email: this.formData.email, password: this.formData.password, product_id: this.product_id};
+				this.$store.commit('login', payload);
 			}
 
 		},
@@ -50,7 +48,11 @@ export default {
 			}
 
 			if (this.$store.state.isLoggedIn) {
-				this.$router.push('/');
+				if (this.product_id) {
+					this.$router.push('/product/' + this.product_id);
+				} else {
+					this.$router.push('/');
+				}
 			}
 
 		},

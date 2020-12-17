@@ -11,7 +11,7 @@
 				<img class="nav-item" id="logo" src="../assets/banner.png" alt="Skysweet">
 			</div>
 			<div class="col-2">
-				<a href="#products" class="nav-item nav-link">Products</a>
+				<a href="/#products" class="nav-item nav-link">Products</a>
 			</div>
 			<div class="col-2">
 				<button v-if="!$store.state.isLoggedIn" class="nav-item nav-link btn btn-primary" @click="$router.push('/user')">Login/Signup</button>

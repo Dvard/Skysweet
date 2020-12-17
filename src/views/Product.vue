@@ -6,6 +6,9 @@
 				<div class="col-md-6 col-sm-12">
 					<h1 v-text="product.title"></h1>
 					<p v-text="product.description"></p>
+					<br />
+					<p class="notice" v-if="showQty" v-text="'Only ' + showQty + ' left!'"></p>
+					<p class="notice" v-if="outOfStock">Out of stock!</p>
 				</div>
 				<div class="col-md-6 col-sm-12">
 					<img :src="getImgUrl(product.short)" alt="Iced Tea">
@@ -21,7 +24,7 @@
 							<button class="btn btn-light" @click="to_buy_qty++">+</button>
 						</div>
 					</div>
-					<button class="btn btn-primary" @click="addToCart()">Add to cart</button>
+					<button class="btn btn-primary" @click="addToCart()" :disabled="outOfStock">Add to cart</button>
 				</div>
 			</div>
 		</main>
@@ -35,6 +38,8 @@ export default {
 		return {
 			product: {},
 			to_buy_qty: 1,
+			showQty: 0,
+			outOfStock: false,
 		};
 	},
 	methods: {
@@ -51,6 +56,15 @@ export default {
 					.get(this.$store.state.apiUrl + '/product/' + id, {})
 					.then((results) => {
 						this.product = results.data;
+
+						if (this.product.qty < 10 && this.product.qty > 0) {
+							this.showQty = this.product.qty
+						} else if (this.product.qty <= 0) {
+							this.outOfStock = true
+						} else {
+							this.showQty = 0
+							this.outOfStock = false
+						}
 					})
 					.catch((error) => {
 						console.log(error);
@@ -69,12 +83,15 @@ export default {
 						},
 					},)
 					.then((results) => {
+						this.$toast.open('Added to cart!')
 						return results
 					})
 					.catch((error) => {
 						console.log(error);
 						this.product = [];
 					})
+			} else {
+				this.$router.push('/user/' + this.product.id)
 			}
 		},
 	},
@@ -93,12 +110,12 @@ export default {
 }
 
 main {
-	width: 70%;
+	min-width: 70%;
 	background-color: var(--light-border);
 	padding: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	max-height: 80vh;
+	min-height: 80vh;
 }
 
 #inner {
@@ -117,6 +134,11 @@ h1 {
 
 p {
 	font-size: 2rem;
+}
+
+.notice {
+	text-align: center;
+	color: var(--accent-o);
 }
 
 img {
