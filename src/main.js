@@ -16,7 +16,7 @@ import './assets/flexboxgrid.min.css';
 Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
-		apiUrl: 'http://127.0.0.1:5000',
+		apiUrl: 'https://dhg19.pythonanywhere.com',
 		authToken: '',
 		isLoggedIn: false,
 	},
