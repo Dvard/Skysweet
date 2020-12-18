@@ -98,7 +98,7 @@ main {
 }
 
 h1 {
-	font-size: 5rem;
+	font-size: 3rem;
 	padding-top: 15vh;
 }
 
@@ -139,5 +139,12 @@ h1 {
 
 .sold-out {
 	color: darkred;
+}
+
+@media screen and (max-width: 400px) {
+	main {
+		padding-left: 2px;
+		padding-right: 2px;
+	}
 }
 </style>

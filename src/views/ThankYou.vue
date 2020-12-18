@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 main {
-	padding: 50px;
+	padding: 8px;
 	text-align: center;
 }
 

@@ -1,7 +1,7 @@
 <template>
 	<div id="news">
 		<div class="row" id="inner">
-			<div class="col col-7" id="text">
+			<div class="col col-sm-7 col-xs-8" id="text">
 				<h2>New Flavour!</h2>
 				<p>We are happy to announce a new flavour to the family!</p>
 				<p><mark>Blueberry</mark>!</p>
@@ -11,7 +11,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col col-4" id="image">
+			<div class="col col-xs-4" id="image">
 				<img src="../assets/products/blueberry.png" alt="Blueberry Iced Tea">
 			</div>
 		</div>
@@ -59,5 +59,11 @@ mark {
 
 #image img {
 	max-height: 40vh;
+}
+
+@media screen and (max-width: 700px) {
+	img {
+		display: none;
+	}
 }
 </style>

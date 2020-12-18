@@ -3,14 +3,13 @@
 		<main>
 			<button class="btn btn-primary" @click="$router.push('/#products')">Back</button>
 			<div class="row" id="inner">
-				<div class="col-md-6 col-sm-12">
+				<div class="col-md-6 col-xs-12">
 					<h1 v-text="product.title"></h1>
 					<p v-text="product.description"></p>
 					<br />
 					<p class="notice" v-if="showQty" v-text="'Only ' + showQty + ' left!'"></p>
-					<p class="notice" v-if="outOfStock">Out of stock!</p>
 				</div>
-				<div class="col-md-6 col-sm-12">
+				<div class="col-md-6 col-xs-12">
 					<img :src="getImgUrl(product.short)" alt="Iced Tea">
 					<h2 v-text="product.price + '€'"></h2>
 					<div class="row" id="buttons">
@@ -27,6 +26,7 @@
 					<button class="btn btn-primary" @click="addToCart()" :disabled="outOfStock">Add to cart</button>
 				</div>
 			</div>
+			<p class="notice" v-if="outOfStock">Out of stock!</p>
 		</main>
 	</div>
 </template>
@@ -110,7 +110,7 @@ export default {
 }
 
 main {
-	min-width: 70%;
+	min-width: 80%;
 	background-color: var(--light-border);
 	padding: 20px;
 	margin-left: auto;
@@ -124,21 +124,23 @@ main {
 
 h1, p {
 	text-align: left;
-	padding-left: 5rem;
+	padding-left: 2rem;
 }
 
 h1 {
-	font-size: 4rem;
+	font-size: 3rem;
 	color: var(--accent);
 }
 
 p {
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
 
 .notice {
+	width: 100%;
 	text-align: center;
 	color: var(--accent-o);
+	padding: 0;
 }
 
 img {
